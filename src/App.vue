@@ -1,7 +1,20 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { onMounted } from "vue";
+import { useRaidBosses } from "./composables/useRaidBosses";
+import BossCard from "./components/boss/BossCard.vue";
+
+const { bosses, fetchBosses } = useRaidBosses();
+
+onMounted(fetchBosses);
 </script>
 
 <template>
-  <HelloWorld />
+  <div class="grid grid-cols-2 gap-3 p-4">
+    <BossCard
+      v-for="boss in bosses"
+      :key="boss.name + boss.tier"
+      :boss="boss"
+      @select="(b) => console.log('tapped', b.name)"
+    />
+  </div>
 </template>
