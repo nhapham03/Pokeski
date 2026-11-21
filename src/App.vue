@@ -2,9 +2,9 @@
 import { onMounted, ref } from "vue";
 import { useRaidBosses } from "./composables/useRaidBosses";
 import TierFilter from "./components/boss/TierFilter.vue";
-import BossCard from "./components/boss/BossCard.vue";
+import BossGrid from "./components/boss/BossGrid.vue";
 
-const { bosses, fetchBosses, getByTier } = useRaidBosses();
+const { fetchBosses, getByTier } = useRaidBosses();
 const selectedTier = ref("All");
 
 onMounted(fetchBosses);
@@ -12,17 +12,8 @@ onMounted(fetchBosses);
 
 <template>
   <TierFilter v-model="selectedTier" />
-
-  <p class="px-4 text-sm text-pink-700">
-    {{ getByTier(selectedTier).length }} active raids
-  </p>
-
-  <div class="grid grid-cols-2 gap-3 p-4">
-    <BossCard
-      v-for="boss in getByTier(selectedTier)"
-      :key="boss.name + boss.tier"
-      :boss="boss"
-      @select="(b) => console.log('tapped', b.name)"
-    />
-  </div>
+  <BossGrid
+    :bosses="getByTier(selectedTier)"
+    @select="(b) => console.log('tapped', b.name)"
+  />
 </template>
